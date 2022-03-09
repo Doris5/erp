@@ -1,5 +1,11 @@
+from ctypes import util
+
+# from controller.hr import load_data
+
+# from controller.util import generate_id
 import terminal as view
 import hr  # model
+from util import generate_id
 
 """
 #TODO Import model, view etc. didnt work right now
@@ -8,24 +14,59 @@ import hr  # model
 # """
 
 
+def switch_to_dictionary():
+    data = []
+    l_data = hr.load_data()
+    for d in l_data:
+        l_data_diciotnary = {
+            "id": d[0],
+            "name": d[1],
+            "birthday": d[2],
+            "department": d[3],
+            "clearance": d[4],
+        }
+        data.append(l_data_diciotnary)
+    return data
+
+
 def list_employees():
     view.print_table(hr.add_headers_to_data())
 
 
 def add_employee():
-    view.print_error_message("Not implemented yet.")
+    id = generate_id()
+    name = str(input("Enter the employee name: "))
+    date_of_birth = str(input("Enter the date of birth: "))
+    department = str(input("Enter the department name: "))
+    clearance = str(input("Enter the clearance number: "))
+    new_employee = [id, name, date_of_birth, department, clearance]
+    hr.add_employee_to_csv(hr.add_employee_to_table(new_employee))
 
 
 def update_employee():
-    view.print_error_message("Not implemented yet.")
+    id = str(input("Enter the ID of employee to update: "))
+    datas = hr.load_data()
+    module_headers = ["Name: ", "Birth date: ", "Department: ", "Clearance: "]
+    updated_table = hr.update(datas, id, module_headers)
+    hr.add_employee_to_csv(updated_table)
 
 
 def delete_employee():
-    view.print_error_message("Not implemented yet.")
+    id = str(input("Enter the ID of employee to remove: "))
+    datas = hr.load_data()
+    hr.remove_employee(datas, id)
 
 
+# TODO Problem with date 01-01-1111 cut zeros
 def get_oldest_and_youngest():
-    view.print_error_message("Not implemented yet.")
+    sort_header = "Sort by (o)ldest or (y)oungest: "
+    input = view.get_input(sort_header).lower()
+    if input == "o":
+        oldest = hr.get_oldest_employee()
+        view.print_table(hr.add_header_to_data(oldest))
+    if input == "y":
+        youngest = hr.get_youngest_employee()
+        view.print_table(hr.add_header_to_data(youngest))
 
 
 def get_average_age():

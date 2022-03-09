@@ -57,7 +57,7 @@ def print_table(table):
     Args:
         table: list of lists - the table to print out
     """
-    max_cell_len = 30
+    max_cell_len = 25
     table_width = 1 + (max_cell_len + 3) * len(table[0])
     print(f"/{'-' * (table_width - 2)}\\")
     for line in table:
@@ -109,9 +109,12 @@ def print_error_message(message):
 
 def test():
     print_table(
-        [["id", "product", "type"],
-         ["0", "Bazooka", "portable"],
-         ["1", "Sidewinder", "missile"]])
+        [
+            ["id", "product", "type"],
+            ["0", "Bazooka", "portable"],
+            ["1", "Sidewinder", "missile"],
+        ]
+    )
 
 
 if __name__ == "__main__":
